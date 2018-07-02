@@ -12,8 +12,14 @@
   vertical-align: middle;
 }
 
-.App-intro {
+h1 {
+  font-size: 40px;
+}
+
+.app-text {
+  padding-top: 20px;
   font-size: large;
+  line-height: 2;
 }
 
 ::selection {

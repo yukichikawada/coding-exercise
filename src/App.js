@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Tooltip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap.css';
-import placements from 'rc-tooltip/lib/placements';
 
 class App extends Component {
   constructor() {
@@ -16,6 +15,7 @@ class App extends Component {
       visible: false
     };
   }
+  // offset values miss the mark even more when purgeGIF() isn't triggered
 
   handleClick = (event) => {
     let text;
@@ -26,7 +26,8 @@ class App extends Component {
     } else if (document.selection) {
       text = document.selection.createRange().text;
     }
-
+    // save an api call in the event '' is highlighted
+    // and prevent alt img txt from reading broken link
     if (text.toString() !== '') {
       this.setState(
         { highlighted: text.toString() }, () => {
@@ -38,55 +39,54 @@ class App extends Component {
 
   fetchGIF() {
     const api_key = 'dc6zaTOxFJmzC';
-    const url = `http://api.giphy.com/v1/gifs/search?q=${this.state.highlighted}&api_key=${api_key}&limit=1`;
+    const limit = '1';
+    const url = `http://api.giphy.com/v1/gifs/search?q=${this.state.highlighted}&api_key=${api_key}&limit=${limit}`;
     fetch(url)
       .then(response => response.json())
-      .then(data => this.setState({ gifURL: data.data[0].images.fixed_height.url },
-                                  () => this.renderGIF()))
+      .then(data => this.setState({ 
+        gifURL: data.data[0].images.fixed_height.url 
+        }, () => this.renderGIF()))
       .catch(e => console.log('error', e));
   }
 
   renderGIF() {
     this.setState({ visible: true });
-    console.log(this.state.highlighted);
-    console.log(this.state.gifURL);
   }
 
+  // this is triggered when anywhere above or below the 
+  // middle third is clicked, hiding the tooltip
   purgeGIF = (event) => {
     this.setState({ 
       gifURL: '',
       highlighted: '',
       visible: false
     });
-    console.log(this.state);
   }
 
   render() {
-    const isHighlighted = this.state.highlighted;
     return (
       <div className="App">
         <div className="grid-row" onClick={this.purgeGIF}>
         </div>
-        <div className="content">
+        <main className="content">
           <Tooltip
             align={{
               offset: [this.state.offsetX, this.state.offsetY],
             }}
-            overlay={<img src={this.state.gifURL} alt={`broken link for: ${this.state.highlighted}`} />}
+            overlay={<img src={this.state.gifURL} 
+              alt={`broken link for: ${this.state.highlighted}`} />}
             placement={this.state.placement}
             visible={this.state.visible}
           >
-            <div>
+            <section>
               <h1>GiphyTooltip demo</h1>
-              <p className="App-intro" onMouseUp={this.handleClick} >
-                Just select text and get GIFS!
-              </p>
-              <p className="App-intro" onMouseUp={this.handleClick}>
+              <p className="app-text" onMouseUp={this.handleClick} >
+                Just select text and get GIFS! <br />
                 Cats <span role="img" aria-label="cat">😺</span>, dogs <span role="img" aria-label="dog">🐶</span> and unicorns <span role="img" aria-label="unicorn">🦄</span> !
               </p>
-            </div>
+            </section>
           </Tooltip>
-        </div>
+        </main>
         <div className="grid-row" onClick={this.purgeGIF}></div>
       </div>
     );
