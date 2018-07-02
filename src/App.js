@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
+import Tooltip from 'rc-tooltip';
+import 'rc-tooltip/assets/bootstrap.css';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      highlighted: '',
       gifURL: '',
+      highlighted: '',
+      placement: 'top',
+      visible: false
     };
   }
 
@@ -40,14 +44,16 @@ class App extends Component {
   }
 
   renderGIF() {
+    this.setState({ visible: true });
     console.log(this.state.highlighted);
     console.log(this.state.gifURL);
   }
 
   purgeGIF = (event) => {
     this.setState({ 
+      gifURL: '',
       highlighted: '',
-      gifURL: ''
+      visible: false
     });
   }
 
@@ -56,19 +62,22 @@ class App extends Component {
     return (
       <div className="App">
         <div className="grid-row" onClick={this.purgeGIF}>
-          { isHighlighted ? (
-              <img src={this.state.gifURL} alt={`broken link for: ${this.state.highlighted}`} />
-            ) : ''
-          }
         </div>
-        <div className="content">     
-          <h1>GiphyTooltip demo</h1>
-          <p className="App-intro" onMouseUp={this.handleClick} >
-            Just select text and get GIFS!
-          </p>
-          <p className="App-intro" onMouseUp={this.handleClick}>
-            Cats <span role="img" aria-label="cat">😺</span>, dogs <span role="img" aria-label="dog">🐶</span> and unicorns <span role="img" aria-label="unicorn">🦄</span> !
-          </p>
+        <div className="content">
+          <Tooltip
+            placement={this.state.placement}
+            visible={this.state.visible}
+            overlay={<img src={this.state.gifURL} alt={`broken link for: ${this.state.highlighted}`} />}>
+            <div>
+              <h1>GiphyTooltip demo</h1>
+              <p className="App-intro" onMouseUp={this.handleClick} >
+                Just select text and get GIFS!
+              </p>
+              <p className="App-intro" onMouseUp={this.handleClick}>
+                Cats <span role="img" aria-label="cat">😺</span>, dogs <span role="img" aria-label="dog">🐶</span> and unicorns <span role="img" aria-label="unicorn">🦄</span> !
+              </p>
+            </div>
+          </Tooltip>
         </div>
         <div className="grid-row" onClick={this.purgeGIF}></div>
       </div>
