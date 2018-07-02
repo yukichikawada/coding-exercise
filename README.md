@@ -3,6 +3,8 @@
 The task is to create a webpage with a tooltip which shows a GIF for a
 selected word.
 
+![Screenshot GIF](https://media.giphy.com/media/9Di0EAehZz8f0vLzl1/giphy.gif)
+
 ### Specs
 * A tooltip is shown whenever text is selected
 * Use [Giphy Search API](https://developers.giphy.com/docs/) to get GIFS
