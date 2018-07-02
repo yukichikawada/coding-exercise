@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Tooltip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap.css';
+import placements from 'rc-tooltip/lib/placements';
 
 class App extends Component {
   constructor() {
@@ -9,6 +10,8 @@ class App extends Component {
     this.state = {
       gifURL: '',
       highlighted: '',
+      offsetX: -134,
+      offsetY: -70,
       placement: 'top',
       visible: false
     };
@@ -55,6 +58,7 @@ class App extends Component {
       highlighted: '',
       visible: false
     });
+    console.log(this.state);
   }
 
   render() {
@@ -65,9 +69,13 @@ class App extends Component {
         </div>
         <div className="content">
           <Tooltip
+            align={{
+              offset: [this.state.offsetX, this.state.offsetY],
+            }}
+            overlay={<img src={this.state.gifURL} alt={`broken link for: ${this.state.highlighted}`} />}
             placement={this.state.placement}
             visible={this.state.visible}
-            overlay={<img src={this.state.gifURL} alt={`broken link for: ${this.state.highlighted}`} />}>
+          >
             <div>
               <h1>GiphyTooltip demo</h1>
               <p className="App-intro" onMouseUp={this.handleClick} >
