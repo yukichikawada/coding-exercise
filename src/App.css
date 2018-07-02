@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+  display: grid;
+  height: 100vh;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "grid-row"
+                       "content"
+                       "grid-row";
+}
+
+.content {
+  vertical-align: middle;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+::selection {
+  background-color: limegreen;
+}
